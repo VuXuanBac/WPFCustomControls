@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace VXBLibrary
@@ -29,6 +18,7 @@ namespace VXBLibrary
         public static readonly DependencyProperty CanRestartProperty;
         public static readonly DependencyProperty ControlButtonWidthProperty;
         public static readonly DependencyProperty ControlButtonHeightProperty;
+        public static readonly DependencyProperty ControlButtonOpacityProperty;
         public static readonly DependencyProperty SourceProperty;
         
         public static readonly RoutedEvent ContentLoadedEvent;
@@ -40,6 +30,7 @@ namespace VXBLibrary
         public bool CanRestart { get { return (bool)GetValue(CanRestartProperty); } set { SetValue(CanRestartProperty, value); } }
         public double ControlButtonWidth { get { return (double)GetValue(ControlButtonWidthProperty); } set { SetValue(ControlButtonWidthProperty, value); } }
         public double ControlButtonHeight { get { return (double)GetValue(ControlButtonHeightProperty); } set { SetValue(ControlButtonHeightProperty, value); } }
+        public double ControlButtonOpacity { get { return (double)GetValue(ControlButtonOpacityProperty); } set { SetValue(ControlButtonOpacityProperty, value); } }
         public Uri Source { get { return (Uri)GetValue(SourceProperty); } set { SetValue(SourceProperty, value); } }
 
         public event RoutedEventHandler ContentLoaded { add { AddHandler(ContentLoadedEvent, value); } remove { RemoveHandler(ContentLoadedEvent, value); } }
@@ -48,7 +39,6 @@ namespace VXBLibrary
         #region Constant and Private Variables
         private const double LOW_VOLUME = 0.3;
         private const double MEDIUM_VOLUME = 0.5;
-        private const string CONTROL_BUTTONS_STYLE_KEY = "ControlPanelStyle";
 
         private bool isEnd = false;
         #endregion
@@ -56,7 +46,6 @@ namespace VXBLibrary
         #region Properties
 
         public int SizeStep { get; set; } = 50;
-        public double ControlButtonsOpacity { get; set; } = 1.0;
         public bool HasAudio { get => player.HasAudio; }
         public bool HasVideo { get => player.HasVideo; }
         public bool IsContentLoaded
@@ -104,6 +93,7 @@ namespace VXBLibrary
             CanHideProperty = DependencyProperty.Register("CanHide", typeof(bool), typeof(MediaPlayer), new PropertyMetadata(true, OnCanHideChanged));
             ControlButtonWidthProperty = DependencyProperty.Register("ControlButtonWidth", typeof(double), typeof(MediaPlayer), new PropertyMetadata(48.0));
             ControlButtonHeightProperty = DependencyProperty.Register("ControlButtonHeight", typeof(double), typeof(MediaPlayer), new PropertyMetadata(32.0));
+            ControlButtonOpacityProperty = DependencyProperty.Register("ControlButtonOpacity", typeof(double), typeof(MediaPlayer), new PropertyMetadata(1.0));
             SourceProperty = DependencyProperty.Register("Source", typeof(Uri), typeof(MediaPlayer), new PropertyMetadata(null, OnSourceChanged));
             
             ContentLoadedEvent = EventManager.RegisterRoutedEvent("ContentLoaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MediaPlayer));
@@ -146,15 +136,7 @@ namespace VXBLibrary
 
         private static void OnAutoHideChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as MediaPlayer;
-            if ((bool)e.NewValue)
-            {
-                control.pnlControl.Style = control.FindResource(CONTROL_BUTTONS_STYLE_KEY) as Style;
-            }
-            else
-            {
-                control.pnlControl.Style = null;
-            }
+            (d as MediaPlayer).pnlControl.Tag = (bool)e.NewValue ? "AutoHide" : "ShowAlways";
         }
 
         private void Timer_Tick(object sender, EventArgs e)

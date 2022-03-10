@@ -7,25 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style x:Key="ControlPanelStyle" TargetType="{x:Type Panel}">
+        <Style TargetType="{x:Type StackPanel}">
             <Style.Triggers>
+                <Trigger Property="Tag" Value="AutoHide">
+                    <Setter Property="Opacity" Value="0.0"/>
+                </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                 To="1.0" Duration="0:0:0.25"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                 To="0" Duration="0:0:0.25"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
+                    <Setter Property="Opacity" Value="{Binding ControlButtonOpacity}"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="ShowAlways">
+                    <Setter Property="Opacity" Value="1.0"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -42,9 +33,6 @@
             <Setter Property="Margin" Value="2"/>
             <Setter Property="Width" Value="{Binding ControlButtonWidth}"/>
             <Setter Property="Height" Value="{Binding ControlButtonHeight}"/>
-        </Style>
-        <Style x:Key="PlayButtonStyle" 
-               TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Style.Triggers>
                 <Trigger Property="Tag" Value="Play">
                     <Setter Property="Content" Value="{StaticResource PlayIcon}"/>
@@ -52,22 +40,12 @@
                 <Trigger Property="Tag" Value="Pause">
                     <Setter Property="Content" Value="{StaticResource PauseIcon}"/>
                 </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="HideButtonStyle" 
-               TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-            <Style.Triggers>
                 <Trigger Property="Tag" Value="Hide">
                     <Setter Property="Content" Value="{StaticResource HideIcon}"/>
                 </Trigger>
                 <Trigger Property="Tag" Value="Show">
                     <Setter Property="Content" Value="{StaticResource ShowIcon}"/>
                 </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="VolumeButtonStyle" 
-               TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-            <Style.Triggers>
                 <Trigger Property="Tag" Value="Mute">
                     <Setter Property="Content" Value="{StaticResource MuteIcon}"/>
                 </Trigger>
@@ -89,20 +67,16 @@
                       MediaEnded="MediaEnded" MediaOpened="MediaLoaded"/>
         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Hidden">
-            <StackPanel x:Name="pnlControl" Orientation="Horizontal"
+            <StackPanel x:Name="pnlControl" Orientation="Horizontal" Tag="AutoHide"
                         VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Label x:Name="lblStatus" Margin="5" 
                        HorizontalAlignment="Left" HorizontalContentAlignment="Center"/>
-                <Button x:Name="btnPlay" Click="Play_Pause"
-                        Tag="Play"
-                        Style="{StaticResource PlayButtonStyle}">
+                <Button x:Name="btnPlay" Click="Play_Pause" Tag="Play">
                 </Button>
                 <Button x:Name="btnStop" Click="Stop">
                     <Image Source="Images/stop.png" Stretch="Uniform"/>
                 </Button>
-                <Button x:Name="btnVolume" Click="VolumeChange"
-                        Tag="Medium"
-                        Style="{StaticResource VolumeButtonStyle}">
+                <Button x:Name="btnVolume" Click="VolumeChange" Tag="Medium">
                 </Button>
                 <Button x:Name="btnZoomIn" Click="ZoomIn" Visibility="Collapsed">
                     <Image Source="Images/zoomin.png" Stretch="Uniform"/>
@@ -110,9 +84,7 @@
                 <Button x:Name="btnZoomOut" Click="ZoomOut" Visibility="Collapsed">
                     <Image Source="Images/zoomout.png" Stretch="Uniform"/>
                 </Button>
-                <Button x:Name="btnHide" Click="Hide_Show" Visibility="Collapsed"
-                        Tag="Hide"
-                        Style="{StaticResource HideButtonStyle}">
+                <Button x:Name="btnHide" Click="Hide_Show" Visibility="Collapsed" Tag="Hide">
                 </Button>
             </StackPanel>
         </ScrollViewer>
