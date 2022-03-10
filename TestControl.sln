@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestControl", "TestControl\TestControl.csproj", "{A422DD9C-A92A-4588-9C04-3E0C4ED0BC8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VXBLibrary", "VXBLibrary\VXBLibrary.csproj", "{546F63CC-2F50-444F-A69D-A5E137B52F2B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A422DD9C-A92A-4588-9C04-3E0C4ED0BC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A422DD9C-A92A-4588-9C04-3E0C4ED0BC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A422DD9C-A92A-4588-9C04-3E0C4ED0BC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A422DD9C-A92A-4588-9C04-3E0C4ED0BC8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{546F63CC-2F50-444F-A69D-A5E137B52F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{546F63CC-2F50-444F-A69D-A5E137B52F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{546F63CC-2F50-444F-A69D-A5E137B52F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{546F63CC-2F50-444F-A69D-A5E137B52F2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03453976-19B4-4B25-9F39-558500CDEE1B}
+	EndGlobalSection
+EndGlobal

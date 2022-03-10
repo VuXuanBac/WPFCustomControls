@@ -1,0 +1,27 @@
+﻿<Window x:Class="TestControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestControl"
+        xmlns:vxb="clr-namespace:VXBLibrary;assembly=VXBLibrary"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel>
+        <WrapPanel>
+            <CheckBox Margin="7" x:Name="canpause" Content="CanPause" IsChecked="True"/>
+            <CheckBox Margin="7" x:Name="canrestart" Content="CanRestart" IsChecked="True"/>
+            <CheckBox Margin="7" x:Name="canhide" Content="CanHide" IsChecked="True"/>
+            <CheckBox Margin="7" x:Name="canzoom" Content="CanZoom" IsChecked="True"/>
+            <CheckBox Margin="7" x:Name="autohide" Content="AutoHideControlButtons" IsChecked="True"/>
+        </WrapPanel>
+        <TextBox x:Name="txtLink" Margin="10"/>
+        <Button Content="Click to open" Click="Button_Click" Margin="10"/>
+        <vxb:MediaPlayer x:Name="player" Margin="10" Width="500"
+                         CanHide="{Binding ElementName=canhide, Path=IsChecked}"
+                         CanPause="{Binding ElementName=canpause, Path=IsChecked}"
+                         CanRestart="{Binding ElementName=canrestart, Path=IsChecked}"
+                         CanZoom="{Binding ElementName=canzoom, Path=IsChecked}"
+                         AutoHideControlButtons="{Binding ElementName=autohide, Path=IsChecked}"/>
+    </StackPanel>
+</Window>
