@@ -18,14 +18,12 @@
             <CheckBox Margin="7" x:Name="canzoom" Content="CanZoom" IsChecked="True"/>
             <CheckBox Margin="7" x:Name="autohide" Content="AutoHideControlButtons" IsChecked="True"/>
         </WrapPanel>
-        <TextBox x:Name="txtLink" Margin="10"/>
-        <Button Content="Click to open" Click="Button_Click" Margin="10"/>
-        <vxb:MediaPlayer x:Name="player" Margin="10" Width="500"
-                         ControlButtonOpacity="0.1"
-                         CanHide="{Binding ElementName=canhide, Path=IsChecked}"
-                         CanPause="{Binding ElementName=canpause, Path=IsChecked}"
-                         CanRestart="{Binding ElementName=canrestart, Path=IsChecked}"
+        <Button Content="Click here to change Images" Click="Button_Click" Margin="5"/>
+        <Button Content="Click here to change CurrentImage" Click="Button_Click1" Margin="5"/>
+        <Button Content="Click here to change CurrentIndex" Click="Button_Click2" Margin="5"/>
+        <vxb:PhotoViewer x:Name="image" Width="300"
                          CanZoom="{Binding ElementName=canzoom, Path=IsChecked}"
+                         CanHide="{Binding ElementName=canhide, Path=IsChecked}"
                          AutoHideControlButtons="{Binding ElementName=autohide, Path=IsChecked}"/>
     </StackPanel>
 </Window>

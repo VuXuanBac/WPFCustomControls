@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="VXBLibrary.PhotoViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type StackPanel}">
+            <Style.Triggers>
+                <Trigger Property="Tag" Value="AutoHide">
+                    <Setter Property="Opacity" Value="0.0"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="{Binding ControlButtonOpacity}"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="ShowAlways">
+                    <Setter Property="Opacity" Value="1.0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Image x:Key="HideIcon" Source="Images/hide.png" Stretch="Uniform"/>
+        <Image x:Key="ShowIcon" Source="Images/show.png" Stretch="Uniform"/>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Width" Value="{Binding ControlButtonWidth}"/>
+            <Setter Property="Height" Value="{Binding ControlButtonHeight}"/>
+            <Style.Triggers>
+                <Trigger Property="Tag" Value="Hide">
+                    <Setter Property="Content" Value="{StaticResource HideIcon}"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="Show">
+                    <Setter Property="Content" Value="{StaticResource ShowIcon}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Image x:Name="image" Source="{Binding CurrentImage}" 
+               Loaded="ContentLoaded"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Hidden">
+            <StackPanel x:Name="pnlControl" Orientation="Horizontal" Tag="AutoHide"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <Button x:Name="btnPrevious" Click="GoPrevious"
+                         HorizontalAlignment="Left">
+                    <Image Source="Images/previous.png" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="btnZoomIn" Click="ZoomIn">
+                    <Image Source="Images/zoomin.png" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="btnZoomOut" Click="ZoomOut">
+                    <Image Source="Images/zoomout.png" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="btnHide" Click="Hide_Show" Tag="Hide">
+                </Button>
+                <Button x:Name="btnNext" Click="GoNext" 
+                        HorizontalAlignment="Right">
+                    <Image Source="Images/next.png" Stretch="Uniform"/>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

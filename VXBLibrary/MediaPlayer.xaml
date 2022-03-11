@@ -3,9 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VXBLibrary"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:local="clr-namespace:VXBLibrary">
     <UserControl.Resources>
         <Style TargetType="{x:Type StackPanel}">
             <Style.Triggers>
@@ -64,7 +62,7 @@
     <Grid>
         <MediaElement x:Name="player" 
                       LoadedBehavior="Manual" UnloadedBehavior="Stop"
-                      MediaEnded="MediaEnded" MediaOpened="MediaLoaded"/>
+                      MediaEnded="ContentEnded" MediaOpened="ContentLoaded"/>
         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel x:Name="pnlControl" Orientation="Horizontal" Tag="AutoHide"

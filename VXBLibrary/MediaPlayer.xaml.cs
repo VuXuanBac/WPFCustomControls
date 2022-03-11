@@ -21,7 +21,9 @@ namespace VXBLibrary
         public static readonly DependencyProperty ControlButtonOpacityProperty;
         public static readonly DependencyProperty SourceProperty;
         
-        public static readonly RoutedEvent ContentLoadedEvent;
+        public static readonly RoutedEvent MediaLoadedEvent;
+        public static readonly RoutedEvent MediaEndedEvent;
+        public static readonly RoutedEvent MediaFailedEvent;
 
         public bool AutoHideControlButtons { get { return (bool)GetValue(AutoHideControlButtonsProperty); } set { SetValue(AutoHideControlButtonsProperty, value); } }
         public bool CanPause { get { return (bool)GetValue(CanPauseProperty); } set { SetValue(CanPauseProperty, value); } }
@@ -33,7 +35,9 @@ namespace VXBLibrary
         public double ControlButtonOpacity { get { return (double)GetValue(ControlButtonOpacityProperty); } set { SetValue(ControlButtonOpacityProperty, value); } }
         public Uri Source { get { return (Uri)GetValue(SourceProperty); } set { SetValue(SourceProperty, value); } }
 
-        public event RoutedEventHandler ContentLoaded { add { AddHandler(ContentLoadedEvent, value); } remove { RemoveHandler(ContentLoadedEvent, value); } }
+        public event RoutedEventHandler MediaLoaded { add { AddHandler(MediaLoadedEvent, value); } remove { RemoveHandler(MediaLoadedEvent, value); } }
+        public event RoutedEventHandler MediaEnded { add { AddHandler(MediaEndedEvent, value); } remove { RemoveHandler(MediaEndedEvent, value); } }
+        public event RoutedEventHandler MediaFailed { add { AddHandler(MediaFailedEvent, value); } remove { RemoveHandler(MediaFailedEvent, value); } }
         #endregion
 
         #region Constant and Private Variables
@@ -96,7 +100,9 @@ namespace VXBLibrary
             ControlButtonOpacityProperty = DependencyProperty.Register("ControlButtonOpacity", typeof(double), typeof(MediaPlayer), new PropertyMetadata(1.0));
             SourceProperty = DependencyProperty.Register("Source", typeof(Uri), typeof(MediaPlayer), new PropertyMetadata(null, OnSourceChanged));
             
-            ContentLoadedEvent = EventManager.RegisterRoutedEvent("ContentLoaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MediaPlayer));
+            MediaLoadedEvent = EventManager.RegisterRoutedEvent("MediaLoaded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MediaPlayer));
+            MediaEndedEvent = EventManager.RegisterRoutedEvent("MediaEnded", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MediaPlayer));
+            MediaFailedEvent = MediaElement.MediaFailedEvent.AddOwner(typeof(MediaPlayer));
         }
 
         private static void OnCanRestartChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -145,11 +151,9 @@ namespace VXBLibrary
             {
                 lblStatus.Content = String.Format("{0:hh\\:mm\\:ss} / {1:hh\\:mm\\:ss}", player.Position, player.NaturalDuration.TimeSpan);
             }
-            else
-                lblStatus.Content = "";
         }
 
-        private void MediaLoaded(object sender, RoutedEventArgs e)
+        private void ContentLoaded(object sender, RoutedEventArgs e)
         {
             if (player.HasVideo)
             {
@@ -167,17 +171,22 @@ namespace VXBLibrary
                 btnVolume.Visibility = Visibility.Collapsed;
 
             IsContentLoaded = true;
+            lblStatus.Content = "Loaded Successfully";
 
-            var args = new RoutedEventArgs(ContentLoadedEvent, sender);
+            var args = new RoutedEventArgs(MediaLoadedEvent, sender);
             this.RaiseEvent(args);
         }
 
-        private void MediaEnded(object sender, RoutedEventArgs e)
+        private void ContentEnded(object sender, RoutedEventArgs e)
         {
-            isEnd = true;
-            IsPlaying = false;
             btnPlay.Tag = "Play";
             btnPlay.IsEnabled = CanRestart;
+
+            isEnd = true;
+            IsPlaying = false;
+
+            var args = new RoutedEventArgs(MediaEndedEvent, sender);
+            this.RaiseEvent(args);
         }
 
         private void Stop(object sender, RoutedEventArgs e)
@@ -245,11 +254,10 @@ namespace VXBLibrary
         {
             btnZoomOut.IsEnabled = true;
             this.Width += SizeStep;
-            if ((!double.IsInfinity(this.MaxWidth) && this.Width >= this.MaxWidth)
-                || (!double.IsInfinity(this.MaxHeight) && this.Height >= this.MaxHeight))
+            if ((!double.IsInfinity(this.MaxWidth) && this.Width + SizeStep >= this.MaxWidth)
+                || (!double.IsInfinity(this.MaxHeight) && this.Height + SizeStep >= this.MaxHeight))
             {
                 btnZoomIn.IsEnabled = false;
-                this.Width -= SizeStep;
             }
         }
 
@@ -257,10 +265,9 @@ namespace VXBLibrary
         {
             btnZoomIn.IsEnabled = true;
             this.Width -= SizeStep;
-            if(this.Width <= ControlButtonWidth)
+            if(this.Width <= ControlButtonWidth - SizeStep)
             {
                 btnZoomOut.IsEnabled = false;
-                this.Width += SizeStep;
             }
         }
 
@@ -277,6 +284,5 @@ namespace VXBLibrary
                 btnHide.Tag = "Hide";
             }
         }
-
     }
 }

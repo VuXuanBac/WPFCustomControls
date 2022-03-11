@@ -27,7 +27,22 @@ namespace TestControl
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            player.Source = new Uri(txtLink.Text, UriKind.Relative);
+            image.Images = new List<Uri>()
+           {
+               new Uri("/hinh2.jpg", UriKind.RelativeOrAbsolute),
+               new Uri("/hinhdep.jpg", UriKind.RelativeOrAbsolute),
+               new Uri("/hinh1.jpg", UriKind.RelativeOrAbsolute)
+           };
+        }
+
+        private void Button_Click1(object sender, RoutedEventArgs e)
+        {
+            image.CurrentImage = new Uri("/happyface.jpg", UriKind.RelativeOrAbsolute);
+        }
+
+        private void Button_Click2(object sender, RoutedEventArgs e)
+        {
+            image.CurrentIndex = 2;
         }
     }
 }
